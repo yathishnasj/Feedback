@@ -20,9 +20,7 @@ function App() {
 
   const fetchFeedbacks = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5000/api/feedback"
-      );
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/feedback`);
 
       setAllFeedbacks(res.data);
     } catch (err) {
@@ -51,10 +49,7 @@ function App() {
 
         setEditIndex(null);
       } else {
-        await axios.post(
-          "http://localhost:5000/api/feedback",
-          feedback
-        );
+        await axios.post(`${import.meta.env.VITE_API_URL}/api/feedback`, data);
 
         alert("Feedback submitted successfully!");
       }
