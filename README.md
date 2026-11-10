@@ -1,4 +1,4 @@
 line
 https://feedback-server-j58a.onrender.com
-demo
+/ndemo
 https://feedback-app-gules-psi.vercel.app
