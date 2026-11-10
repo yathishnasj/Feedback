@@ -41,7 +41,7 @@ function App() {
     try {
       if (editIndex !== null) {
         await axios.put(
-          `http://localhost:5000/api/feedback/${editIndex}`,
+         `https://feedback-sgwr.onrender.com/api/feedback/${editIndex}`,
           feedback
         );
 
@@ -49,7 +49,10 @@ function App() {
 
         setEditIndex(null);
       } else {
-        await axios.post("https://feedback-sgwr.onrender.com/api/feedback", data);
+        await axios.post(
+  "https://feedback-sgwr.onrender.com/api/feedback",
+  feedback
+);
 
         alert("Feedback submitted successfully!");
       }
@@ -85,7 +88,7 @@ function App() {
     ) {
       try {
         await axios.delete(
-          `http://localhost:5000/api/feedback/${index}`
+          `https://feedback-sgwr.onrender.com/api/feedback/${index}`
         );
 
         alert("Feedback deleted successfully!");
