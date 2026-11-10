@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
-const API_URL = import.meta.env.VITE_API_URL;
+
+const API_URL = "https://feedback-sgwr.onrender.com";
+
 function App() {
   const [feedback, setFeedback] = useState({
     q1: "",
@@ -14,19 +16,18 @@ function App() {
   const [allFeedbacks, setAllFeedbacks] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
 
-  useEffect(() => {
-    fetchFeedbacks();
-  }, []);
-
   const fetchFeedbacks = async () => {
     try {
-      const res = await axios.get("https://feedback-sgwr.onrender.com/api/feedback");
-
+      const res = await axios.get(`${API_URL}/api/feedback`);
       setAllFeedbacks(res.data);
     } catch (err) {
       console.error("Error loading feedbacks:", err);
     }
   };
+
+  useEffect(() => {
+    fetchFeedbacks();
+  }, []);
 
   const handleChange = (e) => {
     setFeedback({
@@ -41,18 +42,17 @@ function App() {
     try {
       if (editIndex !== null) {
         await axios.put(
-         `https://feedback-sgwr.onrender.com/api/feedback/${editIndex}`,
+          `${API_URL}/api/feedback/${editIndex}`,
           feedback
         );
 
         alert("Feedback updated successfully!");
-
         setEditIndex(null);
       } else {
         await axios.post(
-  "https://feedback-sgwr.onrender.com/api/feedback",
-  feedback
-);
+          `${API_URL}/api/feedback`,
+          feedback
+        );
 
         alert("Feedback submitted successfully!");
       }
@@ -68,37 +68,28 @@ function App() {
       fetchFeedbacks();
     } catch (error) {
       console.error("Error saving feedback:", error);
-
       alert("Error saving feedback.");
     }
   };
 
   const handleEdit = (index) => {
-    const selected = allFeedbacks[index];
-
-    setFeedback(selected);
+    setFeedback(allFeedbacks[index]);
     setEditIndex(index);
   };
 
   const handleDelete = async (index) => {
-    if (
-      window.confirm(
-        "Are you sure you want to delete this feedback?"
-      )
-    ) {
-      try {
-        await axios.delete(
-          `https://feedback-sgwr.onrender.com/api/feedback/${index}`
-        );
+    if (!window.confirm("Are you sure you want to delete this feedback?")) {
+      return;
+    }
 
-        alert("Feedback deleted successfully!");
+    try {
+      await axios.delete(`${API_URL}/api/feedback/${index}`);
 
-        fetchFeedbacks();
-      } catch (err) {
-        console.error("Error deleting feedback:", err);
-
-        alert("Error deleting feedback.");
-      }
+      alert("Feedback deleted successfully!");
+      fetchFeedbacks();
+    } catch (err) {
+      console.error("Error deleting feedback:", err);
+      alert("Error deleting feedback.");
     }
   };
 
@@ -106,12 +97,8 @@ function App() {
     <div className="container">
       <h1>Feedback Form</h1>
 
-      <form
-        onSubmit={handleSubmit}
-        className="feedback-form"
-      >
+      <form onSubmit={handleSubmit} className="feedback-form">
         <label>Name:</label>
-
         <input
           type="text"
           name="q1"
@@ -121,7 +108,6 @@ function App() {
         />
 
         <label>Department:</label>
-
         <input
           type="text"
           name="q2"
@@ -131,7 +117,6 @@ function App() {
         />
 
         <label>Session Title:</label>
-
         <input
           type="text"
           name="q3"
@@ -141,7 +126,6 @@ function App() {
         />
 
         <label>Feedback:</label>
-
         <input
           type="text"
           name="q4"
@@ -151,7 +135,6 @@ function App() {
         />
 
         <label>Suggestions:</label>
-
         <input
           type="text"
           name="q5"
@@ -181,9 +164,7 @@ function App() {
         <tbody>
           {allFeedbacks.length === 0 ? (
             <tr>
-              <td colSpan="6">
-                No feedback yet
-              </td>
+              <td colSpan="6">No feedback yet</td>
             </tr>
           ) : (
             allFeedbacks.map((fb, index) => (
@@ -193,22 +174,19 @@ function App() {
                 <td>{fb.q3}</td>
                 <td>{fb.q4}</td>
                 <td>{fb.q5}</td>
-
                 <td>
                   <button
+                    type="button"
                     className="edit-btn"
-                    onClick={() =>
-                      handleEdit(index)
-                    }
+                    onClick={() => handleEdit(index)}
                   >
                     Edit
                   </button>
 
                   <button
+                    type="button"
                     className="delete-btn"
-                    onClick={() =>
-                      handleDelete(index)
-                    }
+                    onClick={() => handleDelete(index)}
                   >
                     Delete
                   </button>
