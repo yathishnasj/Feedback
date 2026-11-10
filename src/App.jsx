@@ -1,7 +1,9 @@
-import "./App.css";
-
 function App() {
-  return <h1>Feedback Form is Working 🎉</h1>;
+  return (
+    <h1 style={{ padding: "40px" }}>
+      Feedback Form is Working 🎉
+    </h1>
+  );
 }
 
 export default App;
