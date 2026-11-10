@@ -20,7 +20,7 @@ function App() {
 
   const fetchFeedbacks = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/feedback`);
+      const res = await axios.get("https://feedback-sgwr.onrender.com/api/feedback");
 
       setAllFeedbacks(res.data);
     } catch (err) {
@@ -49,7 +49,7 @@ function App() {
 
         setEditIndex(null);
       } else {
-        await axios.post(`${import.meta.env.VITE_API_URL}/api/feedback`, data);
+        await axios.post("https://feedback-sgwr.onrender.com/api/feedback", data);
 
         alert("Feedback submitted successfully!");
       }
